@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, FlatList, ScrollView } from 'react-native';
 import { Card, Title, Paragraph, Button, FAB, ProgressBar } from 'react-native-paper';
 import { useAppStore } from '../store/appStore';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types';
+import AddGoalModal from '../components/AddGoalModal';
+import CategoryManagerModal from '../components/CategoryManagerModal';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -14,6 +16,9 @@ export default function DashboardScreen() {
   const years = useAppStore((state) => state.years);
   const goals = useAppStore((state) => state.goals);
 
+  const [goalModalVisible, setGoalModalVisible] = useState(false);
+  const [categoryModalVisible, setCategoryModalVisible] = useState(false);
+
   const selectedYear = years.find((y) => y.id === selectedYearId);
   const yearGoals = goals.filter((g) => g.yearId === selectedYearId);
 
@@ -22,8 +27,11 @@ export default function DashboardScreen() {
   };
 
   const handleAddGoal = () => {
-    // TODO: 목표 추가 모달 또는 화면으로 이동
-    console.log('Add goal');
+    setGoalModalVisible(true);
+  };
+
+  const handleManageCategories = () => {
+    setCategoryModalVisible(true);
   };
 
   const handleMonthlyReview = () => {
@@ -56,13 +64,22 @@ export default function DashboardScreen() {
           </Card.Content>
         </Card>
 
-        <Button
-          mode="outlined"
-          onPress={handleMonthlyReview}
-          style={styles.reviewButton}
-        >
-          이번 달 회고 작성
-        </Button>
+        <View style={styles.buttonRow}>
+          <Button
+            mode="outlined"
+            onPress={handleMonthlyReview}
+            style={styles.actionButton}
+          >
+            이번 달 회고 작성
+          </Button>
+          <Button
+            mode="outlined"
+            onPress={handleManageCategories}
+            style={styles.actionButton}
+          >
+            카테고리 관리
+          </Button>
+        </View>
 
         <Title style={styles.sectionTitle}>목표 목록</Title>
 
@@ -105,6 +122,19 @@ export default function DashboardScreen() {
         onPress={handleAddGoal}
         label="목표 추가"
       />
+
+      {selectedYearId && (
+        <AddGoalModal
+          visible={goalModalVisible}
+          onDismiss={() => setGoalModalVisible(false)}
+          yearId={selectedYearId}
+        />
+      )}
+
+      <CategoryManagerModal
+        visible={categoryModalVisible}
+        onDismiss={() => setCategoryModalVisible(false)}
+      />
     </View>
   );
 }
@@ -121,9 +151,14 @@ const styles = StyleSheet.create({
     margin: 16,
     marginTop: 0,
   },
-  reviewButton: {
+  buttonRow: {
+    flexDirection: 'row',
     marginHorizontal: 16,
     marginBottom: 16,
+    gap: 8,
+  },
+  actionButton: {
+    flex: 1,
   },
   sectionTitle: {
     paddingHorizontal: 16,
