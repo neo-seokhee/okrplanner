@@ -19,6 +19,7 @@ import {
 import { User, Goal, MonthlyRecord, Retrospective, Category, RecordStatus } from '../types';
 import * as db from '../services/storageService';
 import { DEMO_GOALS, DEMO_CATEGORIES, DEMO_RECORDS, getDemoRetrospective } from '../demoData';
+import { LoginPromptModal } from './LoginPromptModal';
 
 // Numeric Input Component to handle local state
 const NumericGoalInput = ({
@@ -61,7 +62,7 @@ const NumericGoalInput = ({
   };
 
   return (
-    <div className="flex flex-col sm:flex-row items-center sm:justify-between gap-2 sm:gap-3">
+    <div className="flex flex-row items-center justify-between gap-2">
       <span className="text-sm text-gray-600 font-medium">
         목표: <span className="text-indigo-600 font-bold text-base">{goal.targetValue?.toLocaleString()}</span> {goal.unit}
       </span>
@@ -74,7 +75,7 @@ const NumericGoalInput = ({
           value={value}
           onChange={handleChange}
         />
-        <span className="text-xs text-gray-600 font-medium min-w-[30px] sm:min-w-[40px]">
+        <span className="text-xs text-gray-600 font-medium whitespace-nowrap">
           {goal.unit}
         </span>
         <button
@@ -106,6 +107,7 @@ export const MonthlyRecordManager: React.FC<Props> = ({ user, year, isDemoMode =
   const [retrospectiveHtml, setRetrospectiveHtml] = useState<string>('');
   const [isSaved, setIsSaved] = useState(false);
   const [isEditingRetro, setIsEditingRetro] = useState(false);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const [isCompletedCollapsed, setIsCompletedCollapsed] = useState(true);
 
   const editorRef = useRef<HTMLDivElement>(null);
@@ -233,6 +235,14 @@ export const MonthlyRecordManager: React.FC<Props> = ({ user, year, isDemoMode =
 
   return (
     <div className="pb-24">
+      <LoginPromptModal
+        isOpen={showLoginPrompt}
+        onClose={() => setShowLoginPrompt(false)}
+        onLogin={() => {
+          setShowLoginPrompt(false);
+          window.location.reload();
+        }}
+      />
       {/* Month Navigator */}
       <div className="sticky top-0 z-10 bg-slate-50/95 backdrop-blur pt-2 pb-4 mb-4 border-b border-gray-200">
         <div className="flex items-center justify-between px-4">
@@ -383,13 +393,27 @@ export const MonthlyRecordManager: React.FC<Props> = ({ user, year, isDemoMode =
               />
             </div>
           ) : (
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 min-h-[100px] relative group">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 min-h-[60px] relative group cursor-pointer hover:shadow-md transition-shadow"
+              onClick={() => {
+                if (isDemoMode) {
+                  setShowLoginPrompt(true);
+                  return;
+                }
+                setIsEditingRetro(true);
+                // Wait for render then set content
+                setTimeout(() => {
+                  if (editorRef.current) {
+                    editorRef.current.innerHTML = retrospectiveHtml;
+                  }
+                }, 0);
+              }}>
               {retrospectiveHtml ? (
                 <div
-                  className="prose prose-sm max-w-none text-gray-900 leading-relaxed
+                  className={`prose prose-sm max-w-none text-gray-900 leading-relaxed
                              prose-headings:font-bold prose-p:my-2
                              [&_ol]:list-decimal [&_ol]:ml-4 [&_ul]:list-disc [&_ul]:ml-4
-                             prose-blockquote:border-l-4 prose-blockquote:border-gray-300 prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-gray-500"
+                             prose-blockquote:border-l-4 prose-blockquote:border-gray-300 prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-gray-500
+                             ${isDemoMode ? 'text-xs scale-[0.85] origin-top-left' : ''}`}
                   dangerouslySetInnerHTML={{ __html: retrospectiveHtml }}
                 />
               ) : (

@@ -609,7 +609,13 @@ export const GoalManager: React.FC<Props> = ({ user, year, isDemoMode = false })
           </div>
         ) : (
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 min-h-[60px] relative group cursor-pointer hover:shadow-md transition-shadow"
-            onClick={() => setIsEditingResolution(true)}>
+            onClick={() => {
+              if (isDemoMode) {
+                setShowLoginPrompt(true);
+                return;
+              }
+              setIsEditingResolution(true);
+            }}>
             {/* Edit Button Overlay */}
             <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 backdrop-blur-sm p-1.5 rounded-lg shadow-sm border border-gray-100 text-indigo-600">
               <Edit2 size={16} />
@@ -617,10 +623,11 @@ export const GoalManager: React.FC<Props> = ({ user, year, isDemoMode = false })
 
             {resolution ? (
               <div
-                className="prose prose-sm max-w-none text-gray-900 leading-relaxed
+                className={`prose prose-sm max-w-none text-gray-900 leading-relaxed
                            prose-headings:font-bold prose-p:my-2
                            [&_ol]:list-decimal [&_ol]:ml-4 [&_ul]:list-disc [&_ul]:ml-4
-                           prose-blockquote:border-l-4 prose-blockquote:border-gray-300 prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-gray-500"
+                           prose-blockquote:border-l-4 prose-blockquote:border-gray-300 prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-gray-500
+                           ${isDemoMode ? 'text-xs scale-[0.85] origin-top-left' : ''}`}
                 dangerouslySetInnerHTML={{ __html: resolution }}
               />
             ) : (
