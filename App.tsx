@@ -29,14 +29,19 @@ const App = () => {
     }, 2000);
 
     // Check active session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       if (!mounted) return;
 
       if (session?.user) {
+        // Fetch latest user data from server to ensure fresh metadata
+        const { data: { user: latestUser } } = await supabase.auth.getUser();
+        const user = latestUser || session.user;
+
         setCurrentUser({
-          id: session.user.id,
-          email: session.user.email,
-          username: session.user.user_metadata.username || session.user.email?.split('@')[0] || 'User',
+          id: user.id,
+          email: user.email,
+          username: user.user_metadata.username || user.email?.split('@')[0] || 'User',
+          profile_photo_url: user.user_metadata.avatar_url,
         });
       } else {
         // Show onboarding modal for first-time visitors
