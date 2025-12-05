@@ -53,10 +53,11 @@ const App = () => {
       } else {
         // Show onboarding modal for first-time visitors
         const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
+        const hasDismissedDemoModal = sessionStorage.getItem('demo_modal_dismissed');
         if (!hasSeenOnboarding) {
           setShowOnboarding(true);
-        } else {
-          // If not onboarding and no user, show demo intro
+        } else if (!hasDismissedDemoModal) {
+          // Only show demo intro if not dismissed in this session
           setShowDemoIntro(true);
         }
       }
@@ -138,9 +139,13 @@ const App = () => {
       {/* Demo Introduction Modal */}
       {showDemoIntro && isDemoMode && (
         <DemoIntroductionModal
-          onClose={() => setShowDemoIntro(false)}
+          onClose={() => {
+            setShowDemoIntro(false);
+            sessionStorage.setItem('demo_modal_dismissed', 'true');
+          }}
           onSignUp={() => {
             setShowDemoIntro(false);
+            sessionStorage.setItem('demo_modal_dismissed', 'true');
             setShowAuth(true);
             setActiveTab('SETTINGS');
           }}

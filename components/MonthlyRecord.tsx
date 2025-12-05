@@ -25,11 +25,15 @@ import { LoginPromptModal } from './LoginPromptModal';
 const NumericGoalInput = ({
   goal,
   record,
-  onSave
+  onSave,
+  isDemoMode,
+  onLoginPrompt
 }: {
   goal: Goal;
   record: MonthlyRecord | undefined;
   onSave: (value: number | undefined) => void;
+  isDemoMode?: boolean;
+  onLoginPrompt?: () => void;
 }) => {
   const [value, setValue] = useState<string>('');
 
@@ -80,6 +84,10 @@ const NumericGoalInput = ({
         </span>
         <button
           onClick={() => {
+            if (isDemoMode && onLoginPrompt) {
+              onLoginPrompt();
+              return;
+            }
             const rawValue = value.replace(/,/g, '');
             const numVal = parseFloat(rawValue);
             onSave(isNaN(numVal) && rawValue === '' ? undefined : numVal);
@@ -495,19 +503,37 @@ export const MonthlyRecordManager: React.FC<Props> = ({ user, year, isDemoMode =
                         {goal.type === 'BOOLEAN' ? (
                           <div className="flex gap-2">
                             <button
-                              onClick={() => updateRecord(goal.id, { status: 'SUCCESS', achieved: true })}
+                              onClick={() => {
+                                if (isDemoMode) {
+                                  setShowLoginPrompt(true);
+                                  return;
+                                }
+                                updateRecord(goal.id, { status: 'SUCCESS', achieved: true });
+                              }}
                               className="flex-1 py-2.5 rounded-lg flex items-center justify-center gap-1.5 transition text-sm font-semibold bg-white border-2 border-gray-200 text-gray-600 hover:bg-green-50 hover:border-green-500 hover:text-green-700"
                             >
                               <Check size={16} /> 달성
                             </button>
                             <button
-                              onClick={() => updateRecord(goal.id, { status: 'HOLD', achieved: undefined })}
+                              onClick={() => {
+                                if (isDemoMode) {
+                                  setShowLoginPrompt(true);
+                                  return;
+                                }
+                                updateRecord(goal.id, { status: 'HOLD', achieved: undefined });
+                              }}
                               className="flex-1 py-2.5 rounded-lg flex items-center justify-center gap-1.5 transition text-sm font-semibold bg-white border-2 border-gray-200 text-gray-600 hover:bg-amber-50 hover:border-amber-500 hover:text-amber-700"
                             >
                               <Minus size={16} /> 보류
                             </button>
                             <button
-                              onClick={() => updateRecord(goal.id, { status: 'FAIL', achieved: false })}
+                              onClick={() => {
+                                if (isDemoMode) {
+                                  setShowLoginPrompt(true);
+                                  return;
+                                }
+                                updateRecord(goal.id, { status: 'FAIL', achieved: false });
+                              }}
                               className="flex-1 py-2.5 rounded-lg flex items-center justify-center gap-1.5 transition text-sm font-semibold bg-white border-2 border-gray-200 text-gray-600 hover:bg-red-50 hover:border-red-500 hover:text-red-700"
                             >
                               <X size={16} /> 실패
@@ -518,6 +544,8 @@ export const MonthlyRecordManager: React.FC<Props> = ({ user, year, isDemoMode =
                             goal={goal}
                             record={record}
                             onSave={(value) => updateRecord(goal.id, { numericValue: value })}
+                            isDemoMode={isDemoMode}
+                            onLoginPrompt={() => setShowLoginPrompt(true)}
                           />
                         )}
                       </div>
