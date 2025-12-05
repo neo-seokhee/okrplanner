@@ -489,25 +489,47 @@ export const GoalManager: React.FC<Props> = ({ user, year, isDemoMode = false })
         </div>
 
         {isEditingResolution ? (
-          <div className="animate-in fade-in duration-200">
-            <div className="bg-white/50 px-2 py-2 border border-indigo-50/50 rounded-lg mb-2 flex gap-2 overflow-x-auto items-center justify-between">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 transition-all">
+            <div className="bg-gray-50 px-2 py-2 border-b border-gray-200 text-gray-500 flex gap-2 overflow-x-auto items-center justify-between">
+              {/* Save button on the left */}
+              <button
+                onClick={handleSaveResolution}
+                className="bg-black text-white px-3 py-1.5 rounded-lg font-medium hover:bg-gray-800 transition flex items-center gap-1.5 text-xs flex-shrink-0"
+              >
+                저장
+              </button>
+
               <div className="flex gap-2 items-center">
-                <button onClick={() => execCommand('bold')} className="p-1.5 hover:bg-indigo-100 rounded text-indigo-400 transition" title="굵게"><Bold size={14} /></button>
-                <button onClick={() => execCommand('italic')} className="p-1.5 hover:bg-indigo-100 rounded text-indigo-400 transition" title="이탤릭"><Italic size={14} /></button>
-                <button onClick={() => execCommand('underline')} className="p-1.5 hover:bg-indigo-100 rounded text-indigo-400 transition" title="밑줄"><span className="underline font-bold text-xs">U</span></button>
-                <div className="w-px h-4 bg-indigo-200 mx-1" />
-                <button onClick={() => execCommand('insertUnorderedList')} className="p-1.5 hover:bg-indigo-100 rounded text-indigo-400 transition" title="글머리 기호"><List size={14} /></button>
-                <button onClick={() => execCommand('insertOrderedList')} className="p-1.5 hover:bg-indigo-100 rounded text-indigo-400 transition" title="번호 매기기"><ListOrdered size={14} /></button>
-                <button onClick={() => execCommand('indent')} className="p-1.5 hover:bg-indigo-100 rounded text-indigo-400 transition" title="들여쓰기"><Indent size={14} /></button>
-                <button onClick={() => execCommand('outdent')} className="p-1.5 hover:bg-indigo-100 rounded text-indigo-400 transition" title="내어쓰기"><Outdent size={14} /></button>
-                <div className="w-px h-4 bg-indigo-200 mx-1" />
+                <button onClick={() => execCommand('bold')} className="p-1.5 hover:bg-gray-200 rounded text-gray-600" title="굵게 (Cmd+B)">
+                  <Bold size={16} />
+                </button>
+                <button onClick={() => execCommand('italic')} className="p-1.5 hover:bg-gray-200 rounded text-gray-600" title="이탤릭 (Cmd+I)">
+                  <Italic size={16} />
+                </button>
+                <button onClick={() => execCommand('underline')} className="p-1.5 hover:bg-gray-200 rounded text-gray-600" title="밑줄 (Cmd+U)">
+                  <span className="underline font-bold text-sm">U</span>
+                </button>
+                <div className="w-px h-4 bg-gray-300 mx-1" />
+                <button onClick={() => execCommand('insertUnorderedList')} className="p-1.5 hover:bg-gray-200 rounded text-gray-600" title="글머리 기호">
+                  <List size={16} />
+                </button>
+                <button onClick={() => execCommand('insertOrderedList')} className="p-1.5 hover:bg-gray-200 rounded text-gray-600" title="번호 매기기">
+                  <ListOrdered size={16} />
+                </button>
+                <button onClick={() => execCommand('indent')} className="p-1.5 hover:bg-gray-200 rounded text-gray-600" title="들여쓰기">
+                  <Indent size={16} />
+                </button>
+                <button onClick={() => execCommand('outdent')} className="p-1.5 hover:bg-gray-200 rounded text-gray-600" title="내어쓰기">
+                  <Outdent size={16} />
+                </button>
+                <div className="w-px h-4 bg-gray-300 mx-1" />
                 <button
                   onClick={() => {
                     const selection = window.getSelection();
                     if (selection && selection.rangeCount > 0) {
                       const range = selection.getRangeAt(0);
                       const blockquote = document.createElement('blockquote');
-                      blockquote.className = 'border-l-2 border-indigo-300 pl-2 italic text-gray-500';
+                      blockquote.className = 'border-l-4 border-gray-300 pl-4 italic text-gray-500 my-2';
                       try {
                         range.surroundContents(blockquote);
                       } catch {
@@ -516,39 +538,65 @@ export const GoalManager: React.FC<Props> = ({ user, year, isDemoMode = false })
                       }
                     }
                   }}
-                  className="p-1.5 hover:bg-indigo-100 rounded text-indigo-400 transition"
+                  className="p-1.5 hover:bg-gray-200 rounded text-gray-600"
                   title="인용"
                 >
-                  <MessageSquareQuote size={14} />
+                  <MessageSquareQuote size={16} />
                 </button>
-                <div className="w-px h-4 bg-indigo-200 mx-1" />
+                <div className="w-px h-4 bg-gray-300 mx-1" />
+                {/* Color Pickers with Labels */}
                 <div className="flex items-center gap-1">
                   <div className="relative">
-                    <input type="color" onChange={(e) => execCommand('foreColor', e.target.value)} className="w-5 h-5 p-0 border-0 rounded cursor-pointer" title="글자 색상" />
-                    <span className="absolute -bottom-2.5 left-0 right-0 text-center text-[7px] font-bold text-indigo-600 pointer-events-none">T</span>
+                    <input
+                      type="color"
+                      onChange={(e) => execCommand('foreColor', e.target.value)}
+                      className="w-6 h-6 p-0 border-0 rounded cursor-pointer"
+                      title="글자 색상"
+                    />
+                    <span className="absolute -bottom-3 left-0 right-0 text-center text-[8px] font-bold text-gray-600 pointer-events-none">T</span>
                   </div>
                   <div className="relative">
-                    <input type="color" onChange={(e) => execCommand('hiliteColor', e.target.value)} className="w-5 h-5 p-0 border-0 rounded cursor-pointer" title="배경 색상" defaultValue="#ffffff" />
-                    <span className="absolute -bottom-2.5 left-0 right-0 text-center text-[7px] font-bold text-indigo-600 pointer-events-none">B</span>
+                    <input
+                      type="color"
+                      onChange={(e) => execCommand('hiliteColor', e.target.value)}
+                      className="w-6 h-6 p-0 border-0 rounded cursor-pointer"
+                      title="배경 색상"
+                      defaultValue="#ffffff"
+                    />
+                    <span className="absolute -bottom-3 left-0 right-0 text-center text-[8px] font-bold text-gray-600 pointer-events-none">B</span>
                   </div>
                 </div>
               </div>
-              <button onClick={handleSaveResolution} className="bg-indigo-600 text-white text-xs px-2.5 py-1 rounded-md hover:bg-indigo-700 transition shadow-sm font-medium flex-shrink-0">저장</button>
             </div>
 
             <div
               ref={resolutionEditorRef}
               contentEditable
-              className="w-full bg-white/60 border border-indigo-200 rounded-lg p-3 text-xs text-gray-700 focus:ring-2 focus:ring-indigo-500/20 outline-none overflow-hidden min-h-[100px] prose prose-xs max-w-none [&_ol]:list-decimal [&_ol]:ml-4 [&_ul]:list-disc [&_ul]:ml-4 prose-blockquote:border-l-2 prose-blockquote:border-indigo-300 prose-blockquote:pl-2 prose-blockquote:italic prose-blockquote:text-gray-500"
+              className="w-full min-h-[150px] p-4 outline-none text-gray-900 leading-relaxed text-sm bg-white overflow-y-auto prose prose-sm max-w-none
+                         prose-headings:font-bold prose-p:my-2
+                         [&_ol]:list-decimal [&_ol]:ml-4 [&_ul]:list-disc [&_ul]:ml-4
+                         prose-blockquote:border-l-4 prose-blockquote:border-gray-300 prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-gray-500"
+              style={{ whiteSpace: 'pre-wrap' }}
               dangerouslySetInnerHTML={{ __html: resolution }}
             />
           </div>
         ) : (
-          <div
-            onClick={() => setIsEditingResolution(true)}
-            className="text-xs text-gray-700 leading-relaxed cursor-pointer hover:bg-white/40 rounded-lg p-2 -m-1 transition min-h-[1.5rem] prose prose-xs max-w-none [&_ol]:list-decimal [&_ol]:ml-4 [&_ul]:list-disc [&_ul]:ml-4 prose-blockquote:border-l-2 prose-blockquote:border-indigo-300 prose-blockquote:pl-2 prose-blockquote:text-gray-500"
-            dangerouslySetInnerHTML={{ __html: resolution || '<span class="text-gray-400">터치하여 다짐을 적어보세요.</span>' }}
-          />
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 min-h-[60px] relative group cursor-pointer hover:shadow-md transition-shadow"
+            onClick={() => setIsEditingResolution(true)}>
+            {resolution ? (
+              <div
+                className="prose prose-sm max-w-none text-gray-900 leading-relaxed
+                           prose-headings:font-bold prose-p:my-2
+                           [&_ol]:list-decimal [&_ol]:ml-4 [&_ul]:list-disc [&_ul]:ml-4
+                           prose-blockquote:border-l-4 prose-blockquote:border-gray-300 prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-gray-500"
+                dangerouslySetInnerHTML={{ __html: resolution }}
+              />
+            ) : (
+              <p className="text-gray-400 italic text-center py-2">
+                터치하여 다짐을 적어보세요.
+              </p>
+            )}
+          </div>
         )}
       </div>
 
