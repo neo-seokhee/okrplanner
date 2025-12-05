@@ -544,17 +544,38 @@ export const GoalManager: React.FC<Props> = ({ user, year, isDemoMode = false })
                   <MessageSquareQuote size={16} />
                 </button>
                 <div className="w-px h-4 bg-gray-300 mx-1" />
+                <div className="w-px h-4 bg-gray-300 mx-1" />
                 {/* Font Size Control */}
                 <select
-                  onChange={(e) => execCommand('fontSize', e.target.value)}
-                  className="h-6 text-xs border border-gray-200 rounded px-1 text-gray-600 outline-none focus:border-indigo-500 bg-white"
+                  onChange={(e) => {
+                    const size = e.target.value;
+                    // Apply font size using the "font size 7" replacement hack
+                    document.execCommand('fontSize', false, '7');
+                    const fontElements = resolutionEditorRef.current?.querySelectorAll("font[size='7']");
+                    fontElements?.forEach(el => {
+                      el.removeAttribute("size");
+                      el.style.fontSize = size;
+                    });
+                    // Also handle spans if browser uses styleWithCSS (Chrome sometimes does)
+                    const spanElements = resolutionEditorRef.current?.querySelectorAll("span[style*='font-size: -webkit-xxx-large']");
+                    spanElements?.forEach(el => {
+                      el.style.fontSize = size;
+                    });
+                    // Reset select to default visual state (optional, or keep selected)
+                  }}
+                  className="h-6 text-xs border border-gray-200 rounded px-1 text-gray-600 outline-none focus:border-indigo-500 bg-white w-16"
                   title="글자 크기"
-                  defaultValue="3"
+                  defaultValue="14px"
                 >
-                  <option value="1">작게</option>
-                  <option value="3">보통</option>
-                  <option value="5">크게</option>
-                  <option value="7">아주 크게</option>
+                  <option value="12px">12px</option>
+                  <option value="13px">13px</option>
+                  <option value="14px">14px</option>
+                  <option value="15px">15px</option>
+                  <option value="16px">16px</option>
+                  <option value="18px">18px</option>
+                  <option value="20px">20px</option>
+                  <option value="24px">24px</option>
+                  <option value="30px">30px</option>
                 </select>
                 <div className="w-px h-4 bg-gray-300 mx-1" />
                 {/* Color Pickers with Labels */}
