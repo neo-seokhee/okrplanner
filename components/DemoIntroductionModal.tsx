@@ -16,11 +16,8 @@ export const DemoIntroductionModal: React.FC<Props> = ({ user, isDemoMode }) => 
         // or just show it every time for demo purposes as requested.
         // The user request implies "Before login, during demo", so showing it once on mount is good.
         if (isDemoMode) {
-            const hasShown = sessionStorage.getItem('demo_intro_shown');
-            if (!hasShown) {
-                setIsOpen(true);
-                sessionStorage.setItem('demo_intro_shown', 'true');
-            }
+            // Always show for now to ensure visibility during testing
+            setIsOpen(true);
         }
     }, [isDemoMode]);
 

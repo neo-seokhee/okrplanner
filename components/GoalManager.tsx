@@ -400,7 +400,7 @@ export const GoalManager: React.FC<Props> = ({ user, year, isDemoMode = false })
             ? 'text-indigo-600 bg-indigo-50'
             : 'text-amber-600 bg-amber-50';
         return {
-          label: `${percentage}%`,
+          label: `${percentage.toLocaleString()}%`,
           color: percentColor
         };
       } else {

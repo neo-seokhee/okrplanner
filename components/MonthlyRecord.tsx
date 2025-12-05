@@ -61,7 +61,7 @@ const NumericGoalInput = ({
   };
 
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3">
+    <div className="flex flex-col sm:flex-row items-center sm:justify-between gap-2 sm:gap-3">
       <span className="text-sm text-gray-600 font-medium">
         목표: <span className="text-indigo-600 font-bold text-base">{goal.targetValue?.toLocaleString()}</span> {goal.unit}
       </span>
