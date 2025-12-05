@@ -26,10 +26,14 @@ export const Settings: React.FC<Props> = ({ currentUser, onLogin, onLogout }) =>
 
   // Feedback modal state
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
-  const [feedbackEmail, setFeedbackEmail] = useState('');
   const [feedbackText, setFeedbackText] = useState('');
   const [feedbackSubmitting, setFeedbackSubmitting] = useState(false);
   const [feedbackSuccess, setFeedbackSuccess] = useState(false);
+
+  // Profile edit modal state
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [editingUsername, setEditingUsername] = useState(currentUser?.username || '');
+  const [savingProfile, setSavingProfile] = useState(false);
 
   // Profile photo state
   const [profilePhotoUrl, setProfilePhotoUrl] = useState<string | null>(
@@ -103,7 +107,7 @@ export const Settings: React.FC<Props> = ({ currentUser, onLogin, onLogout }) =>
 
     setFeedbackSubmitting(true);
     const success = await submitFeedback(
-      feedbackEmail || currentUser?.email || 'anonymous',
+      currentUser?.email || 'anonymous',
       feedbackText
     );
     setFeedbackSubmitting(false);
@@ -113,12 +117,30 @@ export const Settings: React.FC<Props> = ({ currentUser, onLogin, onLogout }) =>
       setTimeout(() => {
         setShowFeedbackModal(false);
         setFeedbackText('');
-        setFeedbackEmail('');
         setFeedbackSuccess(false);
       }, 2000);
     } else {
       alert('피드백 전송에 실패했습니다. 다시 시도해주세요.');
     }
+  };
+
+  // Profile update
+  const handleProfileUpdate = async () => {
+    if (!editingUsername.trim() || !currentUser) return;
+
+    setSavingProfile(true);
+    try {
+      await supabase.auth.updateUser({
+        data: { username: editingUsername }
+      });
+      // Update local state
+      currentUser.username = editingUsername;
+      setShowProfileModal(false);
+      alert('프로필이 업데이트되었습니다.');
+    } catch (error) {
+      alert('프로필 업데이트에 실패했습니다.');
+    }
+    setSavingProfile(false);
   };
 
   // Profile photo upload
@@ -455,6 +477,20 @@ export const Settings: React.FC<Props> = ({ currentUser, onLogin, onLogout }) =>
 
         <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider px-2 pt-4">계정</h3>
 
+        <button
+          onClick={() => {
+            setEditingUsername(currentUser.username);
+            setShowProfileModal(true);
+          }}
+          className="w-full bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center justify-between group active:scale-[0.99] transition"
+        >
+          <div className="flex items-center gap-3 text-gray-700">
+            <UserCircle size={20} />
+            <span>프로필 수정</span>
+          </div>
+          <span className="text-xs text-indigo-600 bg-indigo-50 px-2 py-1 rounded font-medium group-hover:bg-indigo-100 transition">닉네임 변경</span>
+        </button>
+
         <div className="pt-4">
           <button
             onClick={handleLogout}
@@ -495,31 +531,20 @@ export const Settings: React.FC<Props> = ({ currentUser, onLogin, onLogout }) =>
               </div>
             ) : (
               <>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">
-                      이메일 (선택)
-                    </label>
-                    <input
-                      type="email"
-                      value={feedbackEmail}
-                      onChange={(e) => setFeedbackEmail(e.target.value)}
-                      placeholder={currentUser.email || 'your@email.com'}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 outline-none transition"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">
-                      피드백
-                    </label>
-                    <textarea
-                      value={feedbackText}
-                      onChange={(e) => setFeedbackText(e.target.value)}
-                      placeholder="이 앱에 대한 의견, 개선 사항, 버그 신고 등을 자유롭게 적어주세요."
-                      rows={5}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 outline-none transition resize-none"
-                    />
-                  </div>
+                <p className="text-sm text-gray-500 mb-4">
+                  피드백은 <span className="font-medium text-gray-700">{currentUser.email}</span>로 전송됩니다.
+                </p>
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">
+                    피드백
+                  </label>
+                  <textarea
+                    value={feedbackText}
+                    onChange={(e) => setFeedbackText(e.target.value)}
+                    placeholder="이 앱에 대한 의견, 개선 사항, 버그 신고 등을 자유롭게 적어주세요."
+                    rows={5}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 outline-none transition resize-none"
+                  />
                 </div>
                 <button
                   onClick={handleFeedbackSubmit}
@@ -537,6 +562,62 @@ export const Settings: React.FC<Props> = ({ currentUser, onLogin, onLogout }) =>
                 </button>
               </>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Profile Edit Modal */}
+      {showProfileModal && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl w-full max-w-md p-6 shadow-xl">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-bold text-gray-900">프로필 수정</h3>
+              <button
+                onClick={() => setShowProfileModal(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">
+                  닉네임
+                </label>
+                <input
+                  type="text"
+                  value={editingUsername}
+                  onChange={(e) => setEditingUsername(e.target.value)}
+                  placeholder="닉네임을 입력하세요"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 outline-none transition"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">
+                  이메일
+                </label>
+                <input
+                  type="email"
+                  value={currentUser.email || ''}
+                  disabled
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-500"
+                />
+                <p className="text-xs text-gray-400 mt-1">이메일은 변경할 수 없습니다.</p>
+              </div>
+            </div>
+
+            <button
+              onClick={handleProfileUpdate}
+              disabled={savingProfile || !editingUsername.trim()}
+              className="w-full mt-6 bg-indigo-600 text-white py-3 rounded-xl font-semibold hover:bg-indigo-700 transition flex items-center justify-center gap-2 disabled:opacity-50"
+            >
+              {savingProfile ? (
+                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              ) : (
+                '저장하기'
+              )}
+            </button>
           </div>
         </div>
       )}

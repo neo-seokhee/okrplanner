@@ -373,6 +373,8 @@ export const GoalManager: React.FC<Props> = ({ user, year, isDemoMode = false })
 
   const getLatestStatus = (goalId: string, type: 'NUMERIC' | 'BOOLEAN', unit?: string) => {
     const goalRecords = records.filter(r => r.goalId === goalId);
+    const goal = goals.find(g => g.id === goalId);
+
     if (goalRecords.length === 0) return { label: '기록 없음', color: 'text-gray-400 bg-gray-50' };
 
     // Sort by month descending
@@ -381,15 +383,33 @@ export const GoalManager: React.FC<Props> = ({ user, year, isDemoMode = false })
 
     if (type === 'BOOLEAN') {
       const status = getRecordStatus(latest);
-      if (status === 'SUCCESS') return { label: '성공중', color: 'text-green-600 bg-green-50' };
-      if (status === 'FAIL') return { label: '실패중', color: 'text-red-500 bg-red-50' };
+      if (status === 'SUCCESS') return { label: '달성', color: 'text-green-600 bg-green-50' };
+      if (status === 'FAIL') return { label: '실패', color: 'text-red-500 bg-red-50' };
       if (status === 'HOLD') return { label: '보류', color: 'text-amber-500 bg-amber-50' };
       return { label: '기록 없음', color: 'text-gray-400 bg-gray-50' };
     } else {
-      return {
-        label: `${latest.month}월: ${latest.numericValue || 0}${unit || ''}`,
-        color: 'text-indigo-600 bg-indigo-50'
-      };
+      // Numeric type - calculate total progress and show percentage
+      const totalValue = goalRecords.reduce((sum, r) => sum + (r.numericValue || 0), 0);
+      const targetValue = goal?.targetValue || 0;
+
+      if (targetValue > 0) {
+        const percentage = Math.round((totalValue / targetValue) * 100);
+        const percentColor = percentage >= 100
+          ? 'text-green-600 bg-green-50'
+          : percentage >= 50
+            ? 'text-indigo-600 bg-indigo-50'
+            : 'text-amber-600 bg-amber-50';
+        return {
+          label: `${percentage}%`,
+          color: percentColor
+        };
+      } else {
+        // No target set, just show current total
+        return {
+          label: `${totalValue}${unit || ''}`,
+          color: 'text-indigo-600 bg-indigo-50'
+        };
+      }
     }
   };
 
