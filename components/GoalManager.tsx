@@ -65,7 +65,7 @@ const SortableGoalItem = ({ goal, onClick, stats }: { goal: Goal; onClick: () =>
       <div className="flex items-center gap-2 flex-1 min-w-0 cursor-pointer" onClick={onClick}>
         <span className="text-3xl bg-gray-50 p-2 rounded-lg flex-shrink-0">{goal.emoji}</span>
         <div className="flex-1 min-w-0">
-          <h4 className="font-semibold text-gray-900">{goal.title}</h4>
+          <h4 className="font-semibold text-gray-900 text-sm">{goal.title}</h4>
           {goal.description && <p className="text-xs text-gray-500 mt-0.5 line-clamp-1">{goal.description}</p>}
         </div>
       </div>

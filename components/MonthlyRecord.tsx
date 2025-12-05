@@ -62,19 +62,19 @@ const NumericGoalInput = ({
 
   return (
     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3">
-      <span className="text-sm sm:text-base text-gray-600 font-medium">
-        목표: <span className="text-indigo-600 font-bold text-base sm:text-xl">{goal.targetValue?.toLocaleString()}</span> {goal.unit}
+      <span className="text-sm text-gray-600 font-medium">
+        목표: <span className="text-indigo-600 font-bold text-base">{goal.targetValue?.toLocaleString()}</span> {goal.unit}
       </span>
       <div className="flex gap-2 items-center justify-end">
         <input
           type="text"
           inputMode="decimal"
-          className="w-20 sm:w-24 bg-transparent border-b-2 border-gray-300 text-gray-900 px-2 py-1 outline-none focus:border-indigo-500 transition text-sm sm:text-base font-bold text-right"
+          className="w-20 sm:w-24 bg-transparent border-b-2 border-gray-300 text-gray-900 px-2 py-1 outline-none focus:border-indigo-500 transition text-sm font-bold text-right"
           placeholder="0"
           value={value}
           onChange={handleChange}
         />
-        <span className="text-xs sm:text-sm text-gray-600 font-medium min-w-[30px] sm:min-w-[40px]">
+        <span className="text-xs text-gray-600 font-medium min-w-[30px] sm:min-w-[40px]">
           {goal.unit}
         </span>
         <button
@@ -242,7 +242,7 @@ export const MonthlyRecordManager: React.FC<Props> = ({ user, year, isDemoMode =
           >
             <ChevronLeft size={24} />
           </button>
-          <h2 className="text-xl font-bold text-gray-900 w-32 text-center">{monthName}</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 w-32 text-center">{monthName}</h2>
           <button
             onClick={() => setCurrentMonth(m => m < 12 ? m + 1 : 1)}
             className="p-2 hover:bg-gray-200 rounded-full transition"

@@ -45,13 +45,13 @@ export const LoginPromptModal: React.FC<LoginPromptModalProps> = ({ isOpen, onCl
                     <div className="flex gap-3">
                         <button
                             onClick={onClose}
-                            className="flex-1 px-4 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl transition"
+                            className="flex-1 px-4 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl transition text-sm"
                         >
                             취소
                         </button>
                         <button
                             onClick={onLogin}
-                            className="flex-1 px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-xl transition shadow-lg shadow-indigo-500/30"
+                            className="flex-1 px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-xl transition shadow-lg shadow-indigo-500/30 text-sm"
                         >
                             로그인/회원가입
                         </button>

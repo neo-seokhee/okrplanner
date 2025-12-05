@@ -58,7 +58,7 @@ export const Auth: React.FC<AuthProps> = ({ onLogin }) => {
         <div className="min-h-[calc(100vh-140px)] flex items-center justify-center px-4">
             <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-100">
                 <div className="text-center mb-8">
-                    <h2 className="text-3xl font-bold text-gray-900 mb-2">
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2">
                         {isLogin ? '환영합니다' : '계정 만들기'}
                     </h2>
                     <p className="text-gray-500">
