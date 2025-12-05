@@ -356,7 +356,7 @@ export const GoalManager: React.FC<Props> = ({ user, year, isDemoMode = false })
     if (!selectedGoal) return;
     setEditingGoal(selectedGoal);
     setDetailModalOpen(false);
-    setGoalModalOpen(true);
+    setShowGoalModal(true);
     setShowEmojiPicker(false);
   };
 
@@ -406,7 +406,7 @@ export const GoalManager: React.FC<Props> = ({ user, year, isDemoMode = false })
       } else {
         // No target set, just show current total
         return {
-          label: `${totalValue}${unit || ''}`,
+          label: `${totalValue.toLocaleString()}${unit || ''}`,
           color: 'text-indigo-600 bg-indigo-50'
         };
       }
@@ -433,7 +433,7 @@ export const GoalManager: React.FC<Props> = ({ user, year, isDemoMode = false })
 
     const goal = goals.find(g => g.id === goalId);
     if (goal?.type === 'NUMERIC') {
-      return <span className="text-xs">{record.numericValue}</span>;
+      return <span className="text-xs">{record.numericValue?.toLocaleString()}</span>;
     } else {
       const status = getRecordStatus(record);
       if (status === 'SUCCESS') return <Check size={14} />;

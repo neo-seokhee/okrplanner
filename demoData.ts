@@ -208,7 +208,7 @@ export const DEMO_RETROSPECTIVES: { [key: number]: { id: string; year: number; m
         month: 1,
         content: `<p>새해 첫 달이라 그런지 의욕이 넘쳤다! 💪</p>
 
-<h3>잘한 것들</h3>
+<p class="font-bold text-base mt-4 mb-2">잘한 것들</p>
 <ul>
   <li>아침 운동을 거의 매일 했다. 일찍 일어나는 게 생각보다 괜찮네</li>
   <li>물 마시기도 잘 챙겼고, 새 기술 스택 공부도 완료했다</li>
@@ -225,7 +225,7 @@ export const DEMO_RETROSPECTIVES: { [key: number]: { id: string; year: number; m
         month: 2,
         content: `<p>2월은 좀 힘들었다... 😓</p>
 
-<h3>아쉬운 점</h3>
+<p class="font-bold text-base mt-4 mb-2">아쉬운 점</p>
 <ul>
   <li>운동을 며칠 빼먹었다. 날씨가 추워서 핑계가 많았음</li>
   <li>기술 스택 공부는 진도가 안 나갔다. 회사 일이 바빠서...</li>
@@ -242,7 +242,7 @@ export const DEMO_RETROSPECTIVES: { [key: number]: { id: string; year: number; m
         month: 3,
         content: `<p>다시 궤도에 올라왔다! 🚀</p>
 
-<h3>좋았던 점</h3>
+<p class="font-bold text-base mt-4 mb-2">좋았던 점</p>
 <ul>
   <li>운동 루틴을 다시 잡았다. 아침형 인간 성공!</li>
   <li>물도 잘 마셨고, 기술 공부도 완료</li>
@@ -259,7 +259,7 @@ export const DEMO_RETROSPECTIVES: { [key: number]: { id: string; year: number; m
         month: 4,
         content: `<p>완벽한 한 달이었다! 🎉</p>
 
-<h3>대박 달성</h3>
+<p class="font-bold text-base mt-4 mb-2">대박 달성</p>
 <ul>
   <li>모든 목표를 100% 달성했다!</li>
   <li>운동 30일 완주, 물 마시기도 완벽</li>
@@ -276,7 +276,7 @@ export const DEMO_RETROSPECTIVES: { [key: number]: { id: string; year: number; m
         month: 5,
         content: `<p>번아웃이 왔다... 😵</p>
 
-<h3>힘들었던 점</h3>
+<p class="font-bold text-base mt-4 mb-2">힘들었던 점</p>
 <ul>
   <li>4월에 너무 열심히 해서 그런가, 5월엔 지쳤다</li>
   <li>운동도 많이 빠지고, 공부도 거의 못 했다</li>
@@ -293,7 +293,7 @@ export const DEMO_RETROSPECTIVES: { [key: number]: { id: string; year: number; m
         month: 6,
         content: `<p>천천히 회복 중... 🌱</p>
 
-<h3>조금씩 나아지는 중</h3>
+<p class="font-bold text-base mt-4 mb-2">조금씩 나아지는 중</p>
 <ul>
   <li>운동을 다시 시작했다. 매일은 아니지만 꾸준히</li>
   <li>물 마시기는 잘 챙기고 있다</li>
@@ -310,7 +310,7 @@ export const DEMO_RETROSPECTIVES: { [key: number]: { id: string; year: number; m
         month: 7,
         content: `<p>여름휴가 다녀왔다 🏖️</p>
 
-<h3>휴가의 영향</h3>
+<p class="font-bold text-base mt-4 mb-2">휴가의 영향</p>
 <ul>
   <li>휴가 가느라 운동을 많이 못 했다</li>
   <li>그래도 여행 가서 많이 걸었으니... 운동이라고 치자</li>
@@ -327,7 +327,7 @@ export const DEMO_RETROSPECTIVES: { [key: number]: { id: string; year: number; m
         month: 8,
         content: `<p>재충전 효과가 있었다! ⚡</p>
 
-<h3>다시 돌아온 열정</h3>
+<p class="font-bold text-base mt-4 mb-2">다시 돌아온 열정</p>
 <ul>
   <li>운동을 열심히 했다. 휴가 후 체력 회복 완료</li>
   <li>새 기술 공부도 재미있게 했다</li>
@@ -344,7 +344,7 @@ export const DEMO_RETROSPECTIVES: { [key: number]: { id: string; year: number; m
         month: 9,
         content: `<p>가을이 왔고, 나도 성장했다 🍂</p>
 
-<h3>최고의 달</h3>
+<p class="font-bold text-base mt-4 mb-2">최고의 달</p>
 <ul>
   <li>거의 모든 목표를 달성했다</li>
   <li>운동도, 공부도, 저축도 완벽!</li>
@@ -361,7 +361,7 @@ export const DEMO_RETROSPECTIVES: { [key: number]: { id: string; year: number; m
         month: 10,
         content: `<p>꾸준함의 힘을 느낀다 💪</p>
 
-<h3>안정적인 한 달</h3>
+<p class="font-bold text-base mt-4 mb-2">안정적인 한 달</p>
 <ul>
   <li>특별한 일 없이 목표들을 잘 달성했다</li>
   <li>이제 운동이 습관이 된 것 같다</li>
@@ -378,7 +378,7 @@ export const DEMO_RETROSPECTIVES: { [key: number]: { id: string; year: number; m
         month: 11,
         content: `<p>연말 스퍼트! 🏃‍♂️💨</p>
 
-<h3>마지막 힘내기</h3>
+<p class="font-bold text-base mt-4 mb-2">마지막 힘내기</p>
 <ul>
   <li>올해 마지막이라고 생각하니 더 열심히 했다</li>
   <li>모든 목표 100% 달성!</li>
@@ -395,7 +395,7 @@ export const DEMO_RETROSPECTIVES: { [key: number]: { id: string; year: number; m
         month: 12,
         content: `<p>한 해의 마지막 달... 🎄</p>
 
-<h3>아직 진행 중</h3>
+<p class="font-bold text-base mt-4 mb-2">아직 진행 중</p>
 <ul>
   <li>아직 달이 끝나지 않았지만 잘 하고 있다</li>
   <li>연말이라 바쁘지만 목표는 놓치지 않으려고 노력 중</li>
@@ -416,7 +416,7 @@ export const getDemoRetrospective = (month: number) => {
 // Demo resolution (year's commitment) - diary-style
 export const DEMO_RESOLUTION = `<p>새해가 밝았다! 🌅 올해는 정말 제대로 해보고 싶다.</p>
 
-<h3>올해의 3가지 핵심 목표</h3>
+<p class="font-bold text-base mt-4 mb-2">올해의 3가지 핵심 목표</p>
 <ol>
   <li><strong>건강한 몸 만들기</strong> - 매일 운동하고, 물 충분히 마시기</li>
   <li><strong>커리어 성장</strong> - 새로운 기술 배우고, 강의 들으며 전문성 높이기</li>

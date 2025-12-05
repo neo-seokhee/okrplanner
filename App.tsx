@@ -5,6 +5,8 @@ import { MonthlyRecordManager } from './components/MonthlyRecord';
 import { Settings } from './components/Settings';
 import { Auth } from './components/Auth';
 import { OnboardingModal } from './components/OnboardingModal';
+import { DemoIntroductionModal } from './components/DemoIntroductionModal';
+import { Toaster } from 'sonner';
 import { supabase } from './services/supabase';
 import { User } from './types';
 import { DEMO_USER } from './demoData';
@@ -16,6 +18,7 @@ const App = () => {
   const [isInitializing, setIsInitializing] = useState(true);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
+  const [showDemoIntro, setShowDemoIntro] = useState(false); // New state for demo intro
 
   useEffect(() => {
     let mounted = true;
@@ -25,6 +28,10 @@ const App = () => {
       if (mounted && isInitializing) {
         console.warn('Auth check timed out, falling back to demo mode');
         setIsInitializing(false);
+        // If auth timed out and no user, show demo intro
+        if (!currentUser) {
+          setShowDemoIntro(true);
+        }
       }
     }, 2000);
 
@@ -48,12 +55,19 @@ const App = () => {
         const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
         if (!hasSeenOnboarding) {
           setShowOnboarding(true);
+        } else {
+          // If not onboarding and no user, show demo intro
+          setShowDemoIntro(true);
         }
       }
       setIsInitializing(false);
     }).catch(err => {
       console.error('Auth check failed:', err);
       if (mounted) setIsInitializing(false);
+      // If auth failed and no user, show demo intro
+      if (!currentUser) {
+        setShowDemoIntro(true);
+      }
     });
 
     // Listen for auth changes
@@ -70,8 +84,10 @@ const App = () => {
           profile_photo_url: session.user.user_metadata.avatar_url,
         });
         setShowAuth(false);
+        setShowDemoIntro(false); // Hide demo intro if user logs in
       } else {
         setCurrentUser(null);
+        setShowDemoIntro(true); // Show demo intro if user logs out
       }
     });
 
@@ -86,18 +102,18 @@ const App = () => {
     await supabase.auth.signOut();
     setCurrentUser(null);
     setActiveTab('GOALS');
+    setShowDemoIntro(true); // Show demo intro after logout
   };
 
-  const handleCloseOnboarding = () => {
+  const handleOnboardingComplete = (action: 'signup' | 'continue') => {
     setShowOnboarding(false);
     localStorage.setItem('hasSeenOnboarding', 'true');
-  };
-
-  const handleSignUp = () => {
-    setShowOnboarding(false);
-    setShowAuth(true);
-    setActiveTab('SETTINGS');
-    localStorage.setItem('hasSeenOnboarding', 'true');
+    if (action === 'signup') {
+      setShowAuth(true);
+      setActiveTab('SETTINGS');
+    } else {
+      setShowDemoIntro(true); // Show demo intro if user chooses to continue without signing up
+    }
   };
 
   if (isInitializing) {
@@ -110,11 +126,24 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 text-gray-900 font-sans selection:bg-indigo-100 selection:text-indigo-900">
+      <Toaster richColors />
       {/* Onboarding Modal */}
       {showOnboarding && (
         <OnboardingModal
-          onClose={handleCloseOnboarding}
-          onSignUp={handleSignUp}
+          onClose={() => setShowOnboarding(false)}
+          onComplete={handleOnboardingComplete}
+        />
+      )}
+
+      {/* Demo Introduction Modal */}
+      {showDemoIntro && isDemoMode && (
+        <DemoIntroductionModal
+          onClose={() => setShowDemoIntro(false)}
+          onSignUp={() => {
+            setShowDemoIntro(false);
+            setShowAuth(true);
+            setActiveTab('SETTINGS');
+          }}
         />
       )}
 
@@ -131,7 +160,10 @@ const App = () => {
           <div className="flex items-center gap-3">
             {isDemoMode ? (
               <button
-                onClick={handleSignUp}
+                onClick={() => {
+                  setShowAuth(true);
+                  setActiveTab('SETTINGS');
+                }}
                 className="px-4 py-1.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-sm font-semibold rounded-lg transition shadow-sm"
               >
                 시작하기
