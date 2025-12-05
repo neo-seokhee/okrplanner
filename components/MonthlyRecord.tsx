@@ -413,7 +413,7 @@ export const MonthlyRecordManager: React.FC<Props> = ({ user, year, isDemoMode =
                              prose-headings:font-bold prose-p:my-2
                              [&_ol]:list-decimal [&_ol]:ml-4 [&_ul]:list-disc [&_ul]:ml-4
                              prose-blockquote:border-l-4 prose-blockquote:border-gray-300 prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-gray-500
-                             ${isDemoMode ? 'text-xs scale-[0.85] origin-top-left' : ''}`}
+                             ${isDemoMode ? 'text-sm [&_*]:!text-sm' : ''}`}
                   dangerouslySetInnerHTML={{ __html: retrospectiveHtml }}
                 />
               ) : (
