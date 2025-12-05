@@ -318,6 +318,19 @@ export const MonthlyRecordManager: React.FC<Props> = ({ user, year, isDemoMode =
                     <MessageSquareQuote size={16} />
                   </button>
                   <div className="w-px h-4 bg-gray-300 mx-1" />
+                  {/* Font Size Control */}
+                  <select
+                    onChange={(e) => execCommand('fontSize', e.target.value)}
+                    className="h-6 text-xs border border-gray-200 rounded px-1 text-gray-600 outline-none focus:border-indigo-500 bg-white"
+                    title="글자 크기"
+                    defaultValue="3"
+                  >
+                    <option value="1">작게</option>
+                    <option value="3">보통</option>
+                    <option value="5">크게</option>
+                    <option value="7">아주 크게</option>
+                  </select>
+                  <div className="w-px h-4 bg-gray-300 mx-1" />
                   {/* Color Pickers with Labels */}
                   <div className="flex items-center gap-1">
                     <div className="relative">

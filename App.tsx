@@ -62,6 +62,7 @@ const App = () => {
           id: session.user.id,
           email: session.user.email,
           username: session.user.user_metadata.username || session.user.email?.split('@')[0] || 'User',
+          profile_photo_url: session.user.user_metadata.avatar_url,
         });
         setShowAuth(false);
       } else {

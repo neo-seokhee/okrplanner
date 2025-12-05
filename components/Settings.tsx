@@ -37,7 +37,7 @@ export const Settings: React.FC<Props> = ({ currentUser, onLogin, onLogout }) =>
 
   // Profile photo state
   const [profilePhotoUrl, setProfilePhotoUrl] = useState<string | null>(
-    currentUser?.user_metadata?.avatar_url || null
+    currentUser?.profile_photo_url || null
   );
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
 

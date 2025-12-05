@@ -71,7 +71,7 @@ const SortableGoalItem = ({ goal, onClick, stats }: { goal: Goal; onClick: () =>
       </div>
 
       <div className="flex items-center gap-3 flex-shrink-0">
-        <div className={`text-[10px] px-2.5 py-1 rounded-lg font-bold ${stats.color}`}>
+        <div className={`text-xs px-3 py-1.5 rounded-lg font-bold ${stats.color}`}>
           {stats.label}
         </div>
       </div>
@@ -544,6 +544,19 @@ export const GoalManager: React.FC<Props> = ({ user, year, isDemoMode = false })
                   <MessageSquareQuote size={16} />
                 </button>
                 <div className="w-px h-4 bg-gray-300 mx-1" />
+                {/* Font Size Control */}
+                <select
+                  onChange={(e) => execCommand('fontSize', e.target.value)}
+                  className="h-6 text-xs border border-gray-200 rounded px-1 text-gray-600 outline-none focus:border-indigo-500 bg-white"
+                  title="글자 크기"
+                  defaultValue="3"
+                >
+                  <option value="1">작게</option>
+                  <option value="3">보통</option>
+                  <option value="5">크게</option>
+                  <option value="7">아주 크게</option>
+                </select>
+                <div className="w-px h-4 bg-gray-300 mx-1" />
                 {/* Color Pickers with Labels */}
                 <div className="flex items-center gap-1">
                   <div className="relative">
@@ -583,6 +596,11 @@ export const GoalManager: React.FC<Props> = ({ user, year, isDemoMode = false })
         ) : (
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 min-h-[60px] relative group cursor-pointer hover:shadow-md transition-shadow"
             onClick={() => setIsEditingResolution(true)}>
+            {/* Edit Button Overlay */}
+            <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 backdrop-blur-sm p-1.5 rounded-lg shadow-sm border border-gray-100 text-indigo-600">
+              <Edit2 size={16} />
+            </div>
+
             {resolution ? (
               <div
                 className="prose prose-sm max-w-none text-gray-900 leading-relaxed
