@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { User, LogIn, LogOut, Database, UserCircle, UserPlus, Lock, Mail, AlertCircle, Download, Upload, MessageSquare, Send, Camera, X } from 'lucide-react';
+import { User, LogIn, LogOut, Database, UserCircle, UserPlus, Lock, Mail, AlertCircle, Download, Upload, MessageSquare, Send, Camera, X, Edit2 } from 'lucide-react';
 import { User as UserType } from '../types';
 import * as db from '../services/storageService';
 import { supabase } from '../services/supabase';
@@ -392,8 +392,14 @@ export const Settings: React.FC<Props> = ({ currentUser, onLogin, onLogout }) =>
 
   return (
     <div className="pb-24">
-      {/* Profile Section with Photo Upload */}
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6 flex items-center gap-4">
+      {/* Profile Section - Click to edit */}
+      <div
+        className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6 flex items-center gap-4 cursor-pointer hover:shadow-md transition-shadow active:scale-[0.99]"
+        onClick={() => {
+          setEditingUsername(currentUser.username);
+          setShowProfileModal(true);
+        }}
+      >
         <div className="relative">
           {profilePhotoUrl ? (
             <img
@@ -406,30 +412,22 @@ export const Settings: React.FC<Props> = ({ currentUser, onLogin, onLogout }) =>
               {currentUser.username[0].toUpperCase()}
             </div>
           )}
-          <button
-            onClick={() => profilePhotoInputRef.current?.click()}
-            disabled={uploadingPhoto}
-            className="absolute -bottom-1 -right-1 w-6 h-6 bg-indigo-600 rounded-full flex items-center justify-center text-white hover:bg-indigo-700 transition shadow-lg"
-          >
-            {uploadingPhoto ? (
-              <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-            ) : (
-              <Camera size={12} />
-            )}
-          </button>
-          <input
-            ref={profilePhotoInputRef}
-            type="file"
-            accept="image/*"
-            onChange={handleProfilePhotoChange}
-            className="hidden"
-          />
         </div>
-        <div>
+        <div className="flex-1">
           <h2 className="text-xl font-bold text-gray-900">{currentUser.username}님, 안녕하세요!</h2>
           <p className="text-gray-500 text-sm">{currentUser.email || '이메일 정보 없음'}</p>
         </div>
+        <div className="text-gray-400">
+          <Edit2 size={18} />
+        </div>
       </div>
+      <input
+        ref={profilePhotoInputRef}
+        type="file"
+        accept="image/*"
+        onChange={handleProfilePhotoChange}
+        className="hidden"
+      />
 
       <div className="space-y-3">
         <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider px-2">데이터 관리</h3>
@@ -476,20 +474,6 @@ export const Settings: React.FC<Props> = ({ currentUser, onLogin, onLogout }) =>
         </button>
 
         <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider px-2 pt-4">계정</h3>
-
-        <button
-          onClick={() => {
-            setEditingUsername(currentUser.username);
-            setShowProfileModal(true);
-          }}
-          className="w-full bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center justify-between group active:scale-[0.99] transition"
-        >
-          <div className="flex items-center gap-3 text-gray-700">
-            <UserCircle size={20} />
-            <span>프로필 수정</span>
-          </div>
-          <span className="text-xs text-indigo-600 bg-indigo-50 px-2 py-1 rounded font-medium group-hover:bg-indigo-100 transition">닉네임 변경</span>
-        </button>
 
         <div className="pt-4">
           <button
@@ -578,6 +562,38 @@ export const Settings: React.FC<Props> = ({ currentUser, onLogin, onLogout }) =>
               >
                 <X size={24} />
               </button>
+            </div>
+
+            {/* Profile Photo Section */}
+            <div className="flex flex-col items-center mb-6">
+              <div className="relative">
+                {profilePhotoUrl ? (
+                  <img
+                    src={profilePhotoUrl}
+                    alt="Profile"
+                    className="w-24 h-24 rounded-full object-cover border-4 border-indigo-100"
+                  />
+                ) : (
+                  <div className="w-24 h-24 bg-gradient-to-br from-indigo-600 to-indigo-800 rounded-full flex items-center justify-center text-white text-4xl font-bold shadow-inner">
+                    {currentUser.username[0].toUpperCase()}
+                  </div>
+                )}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    profilePhotoInputRef.current?.click();
+                  }}
+                  disabled={uploadingPhoto}
+                  className="absolute bottom-0 right-0 w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center text-white hover:bg-indigo-700 transition shadow-lg"
+                >
+                  {uploadingPhoto ? (
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    <Camera size={16} />
+                  )}
+                </button>
+              </div>
+              <p className="text-xs text-gray-400 mt-2">클릭하여 사진 변경</p>
             </div>
 
             <div className="space-y-4">

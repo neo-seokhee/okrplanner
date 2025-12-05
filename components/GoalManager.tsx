@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Plus, Trash2, Tag, Target, Edit2, BarChart2, X, Check, Smile, Minus, PenTool, Quote, Bold, List, ListOrdered, MessageSquareQuote, GripVertical, Italic, Indent, Outdent } from 'lucide-react';
 import { Goal, Category, User, MonthlyRecord, RecordStatus, Resolution } from '../types';
 import * as db from '../services/storageService';
-import { DEMO_GOALS, DEMO_CATEGORIES } from '../demoData';
+import { DEMO_GOALS, DEMO_CATEGORIES, DEMO_RECORDS, DEMO_RESOLUTION } from '../demoData';
 import { Modal } from './ui/Modal';
 import { LoginPromptModal } from './LoginPromptModal';
 import {
@@ -216,8 +216,8 @@ export const GoalManager: React.FC<Props> = ({ user, year, isDemoMode = false })
       // Use demo data
       setGoals(DEMO_GOALS);
       setCategories(DEMO_CATEGORIES);
-      setRecords([]);
-      setResolution('');
+      setRecords(DEMO_RECORDS);
+      setResolution(DEMO_RESOLUTION);
     } else {
       loadData();
     }

@@ -413,3 +413,19 @@ export const getDemoRetrospective = (month: number) => {
     return DEMO_RETROSPECTIVES[month] || DEMO_RETROSPECTIVES[currentMonth];
 };
 
+// Demo resolution (year's commitment) - diary-style
+export const DEMO_RESOLUTION = `<p>새해가 밝았다! 🌅 올해는 정말 제대로 해보고 싶다.</p>
+
+<h3>올해의 3가지 핵심 목표</h3>
+<ol>
+  <li><strong>건강한 몸 만들기</strong> - 매일 운동하고, 물 충분히 마시기</li>
+  <li><strong>커리어 성장</strong> - 새로운 기술 배우고, 강의 들으며 전문성 높이기</li>
+  <li><strong>경제적 안정</strong> - 매달 저축하고 충동구매 줄이기</li>
+</ol>
+
+<blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-500 my-2">
+"작은 습관이 모여 큰 변화를 만든다" - 이게 올해의 좌우명!
+</blockquote>
+
+<p>힘들 때도 있겠지만, 포기하지 않고 꾸준히 해나가자. 💪</p>
+<p>1년 뒤에 이 글을 다시 읽을 때 뿌듯할 수 있도록!</p>`;

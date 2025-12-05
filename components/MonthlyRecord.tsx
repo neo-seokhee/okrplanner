@@ -61,20 +61,20 @@ const NumericGoalInput = ({
   };
 
   return (
-    <div className="flex items-center justify-between gap-3">
-      <span className="text-base text-gray-600 font-medium">
-        목표: <span className="text-indigo-600 font-bold text-xl">{goal.targetValue?.toLocaleString()}</span> {goal.unit}
+    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3">
+      <span className="text-sm sm:text-base text-gray-600 font-medium">
+        목표: <span className="text-indigo-600 font-bold text-base sm:text-xl">{goal.targetValue?.toLocaleString()}</span> {goal.unit}
       </span>
-      <div className="flex gap-2 items-center">
+      <div className="flex gap-2 items-center justify-end">
         <input
           type="text"
           inputMode="decimal"
-          className="w-24 bg-transparent border-b-2 border-gray-300 text-gray-900 px-2 py-1 outline-none focus:border-indigo-500 transition text-base font-bold text-right"
+          className="w-20 sm:w-24 bg-transparent border-b-2 border-gray-300 text-gray-900 px-2 py-1 outline-none focus:border-indigo-500 transition text-sm sm:text-base font-bold text-right"
           placeholder="0"
           value={value}
           onChange={handleChange}
         />
-        <span className="text-sm text-gray-600 font-medium min-w-[40px]">
+        <span className="text-xs sm:text-sm text-gray-600 font-medium min-w-[30px] sm:min-w-[40px]">
           {goal.unit}
         </span>
         <button
@@ -83,7 +83,7 @@ const NumericGoalInput = ({
             const numVal = parseFloat(rawValue);
             onSave(isNaN(numVal) && rawValue === '' ? undefined : numVal);
           }}
-          className="py-1.5 px-3 rounded-lg flex items-center justify-center gap-1 transition text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-700"
+          className="py-2 px-4 rounded-lg flex items-center justify-center gap-1 transition text-sm font-semibold bg-indigo-600 text-white hover:bg-indigo-700 active:scale-95"
         >
           기록
         </button>

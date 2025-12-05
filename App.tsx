@@ -120,9 +120,6 @@ const App = () => {
             <h1 className="text-xl font-bold text-indigo-900 tracking-tight">
               OKR 플래너
             </h1>
-            {isDemoMode && (
-              <span className="text-[10px] px-2 py-0.5 bg-amber-100 text-amber-700 rounded-full font-bold">DEMO</span>
-            )}
           </div>
 
           <div className="flex items-center gap-3">
